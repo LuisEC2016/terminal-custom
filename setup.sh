@@ -51,10 +51,12 @@ fix_ownership() {
 fix_ownership "$HOME/.vimrc"
 fix_ownership "$HOME/.zshrc"
 fix_ownership "$HOME/.p10k.zsh"
+fix_ownership "$HOME/.tmux.conf"
 fix_ownership "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
 fix_ownership "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
 fix_ownership "$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
 fix_ownership "$HOME/.fonts/RobotoMono"
+fix_ownership "$HOME/.config/nvim"
 
 # ── Limpieza de instalaciones anteriores ─────────────────────────────────────
 log "Limpiando instalaciones anteriores..."
@@ -101,19 +103,25 @@ dconf reset -f "/org/gnome/terminal/legacy/profiles:/:${GT_UUID}/" 2>/dev/null |
 ok "Limpieza completada."
 
 # ── Paso 1: Powerline + fuentes ───────────────────────────────────────────────
-printf "\n${BOLD}[1/3] Powerline y fuentes${RESET}\n"
+printf "\n${BOLD}[1/4] Powerline y fuentes${RESET}\n"
 log "Ejecutando install_powerline.sh..."
 bash "$SCRIPT_DIR/install_powerline.sh"
 ok "Powerline y fuentes instalados."
 
-# ── Paso 2: ZSH + Oh My Zsh ──────────────────────────────────────────────────
-printf "\n${BOLD}[2/3] ZSH y Oh My Zsh${RESET}\n"
+# ── Paso 2: Herramientas CLI para programadores ───────────────────────────────
+printf "\n${BOLD}[2/4] Herramientas CLI para programadores${RESET}\n"
+log "Ejecutando install_tools.sh..."
+bash "$SCRIPT_DIR/install_tools.sh"
+ok "Herramientas CLI instaladas."
+
+# ── Paso 3: ZSH + Oh My Zsh ──────────────────────────────────────────────────
+printf "\n${BOLD}[3/4] ZSH y Oh My Zsh${RESET}\n"
 log "Ejecutando install_terminal.sh..."
 bash "$SCRIPT_DIR/install_terminal.sh"
 ok "ZSH y Oh My Zsh instalados."
 
-# ── Paso 3: Plugins, tema y perfil Ptyxis ────────────────────────────────────
-printf "\n${BOLD}[3/3] Plugins, tema ZSH y perfil Ptyxis${RESET}\n"
+# ── Paso 4: Plugins, tema y perfil Ptyxis ────────────────────────────────────
+printf "\n${BOLD}[4/4] Plugins, tema ZSH y perfil Ptyxis${RESET}\n"
 log "Ejecutando install_profile.sh..."
 bash "$SCRIPT_DIR/install_profile.sh"
 ok "Perfil Ptyxis, tema y plugins instalados."
@@ -130,15 +138,35 @@ printf "  Tema ZSH:      ${BOLD}powerlevel10k (paleta Pixegami)${RESET}\n"
 printf "  Paleta Ptyxis: ${BOLD}pixegami${RESET}\n"
 printf "  Fuente:        ${BOLD}Roboto Mono for Powerline 14${RESET}\n"
 printf "  Plugins ZSH:   ${BOLD}git z fzf extract colored-man-pages history${RESET}\n"
-printf "                 ${BOLD}history-substring-search${RESET}\n"
+printf "                 ${BOLD}history-substring-search docker tmux kubectl aws${RESET}\n"
 printf "                 ${BOLD}zsh-syntax-highlighting zsh-autosuggestions${RESET}\n"
+printf "\n  Herramientas CLI instaladas:\n"
+printf "    ${BOLD}bat${RESET}         cat con syntax highlighting\n"
+printf "    ${BOLD}eza${RESET}         ls moderno con iconos y git\n"
+printf "    ${BOLD}fd${RESET}          find moderno y rápido\n"
+printf "    ${BOLD}rg${RESET}          ripgrep — grep ultrarrápido\n"
+printf "    ${BOLD}delta${RESET}       diff con syntax highlighting\n"
+printf "    ${BOLD}lazygit${RESET}     UI TUI para git  (alias: lg)\n"
+printf "    ${BOLD}zoxide${RESET}      cd inteligente con ranking  (alias: z, j)\n"
+printf "    ${BOLD}btop${RESET}        monitor de recursos visual\n"
+printf "    ${BOLD}tmux${RESET}        multiplexador de terminal\n"
+printf "    ${BOLD}glow${RESET}        render de Markdown  (alias: md, readme)\n"
+printf "    ${BOLD}ncdu${RESET}        du interactivo navegable\n"
+printf "    ${BOLD}jq / yq${RESET}     procesador JSON/YAML en terminal\n"
+printf "    ${BOLD}entr${RESET}        re-ejecutar al cambiar archivos\n"
+printf "    ${BOLD}tldr${RESET}        man pages simplificadas\n"
 printf "\n  Atajos clave:\n"
-printf "    ${BOLD}Ctrl+R${RESET}      búsqueda fuzzy en historial\n"
-printf "    ${BOLD}Ctrl+T${RESET}      búsqueda fuzzy de archivos\n"
-printf "    ${BOLD}Alt+C${RESET}       saltar a directorio con fzf\n"
-printf "    ${BOLD}↑ / ↓${RESET}       buscar en historial por substring\n"
-printf "    ${BOLD}Ctrl+Space${RESET}  aceptar sugerencia completa\n"
-printf "    ${BOLD}x <archivo>${RESET} descomprimir cualquier formato\n"
+printf "    ${BOLD}Ctrl+R${RESET}       búsqueda fuzzy en historial\n"
+printf "    ${BOLD}Ctrl+T${RESET}       búsqueda fuzzy de archivos (preview con bat)\n"
+printf "    ${BOLD}Alt+C${RESET}        saltar a directorio con fzf (preview con eza)\n"
+printf "    ${BOLD}↑ / ↓${RESET}        buscar en historial por substring\n"
+printf "    ${BOLD}Ctrl+Space${RESET}   aceptar sugerencia completa\n"
+printf "    ${BOLD}x <archivo>${RESET}  descomprimir cualquier formato\n"
+printf "    ${BOLD}fcd${RESET}          navegar directorios con fzf\n"
+printf "    ${BOLD}fopen${RESET}        abrir archivo con fzf en \$EDITOR\n"
+printf "    ${BOLD}fkill${RESET}        matar proceso con fzf\n"
+printf "    ${BOLD}lg${RESET}           lazygit — UI TUI para git\n"
+printf "    ${BOLD}ji${RESET}           selector de directorios con zoxide+fzf\n"
 
 # Advertir si el shell activo no es zsh todavía (requiere logout/login)
 if [[ "$(basename -- "$SHELL")" != "zsh" ]]; then

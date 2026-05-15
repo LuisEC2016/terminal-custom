@@ -47,6 +47,17 @@ cp "$SCRIPT_DIR/configs/.p10k.zsh" ~/.p10k.zsh
 # Invalidar cache de p10k instant prompt para que se regenere con la config nueva
 rm -f "${XDG_CACHE_HOME:-$HOME/.cache}"/p10k-instant-prompt-*.zsh{,.zwc}
 
+# ── Config tmux ───────────────────────────────────────────────────────────────
+if [[ ! -f "$HOME/.tmux.conf" ]]; then
+  cp "$SCRIPT_DIR/configs/.tmux.conf" ~/.tmux.conf
+fi
+
+# ── Config neovim ─────────────────────────────────────────────────────────────
+if command -v nvim >/dev/null 2>&1 && [[ ! -f "$HOME/.config/nvim/init.lua" ]]; then
+  mkdir -p "$HOME/.config/nvim"
+  cp "$SCRIPT_DIR/configs/init.lua" "$HOME/.config/nvim/init.lua"
+fi
+
 # ── Shell por defecto ─────────────────────────────────────────────────────────
 if [[ "$(basename -- "$SHELL")" != "zsh" ]]; then
   chsh -s "$(command -v zsh)"
